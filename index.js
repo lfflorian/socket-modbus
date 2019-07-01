@@ -1,7 +1,10 @@
 var net = require('net');
 var modbus = require('modbus-tcp');
 var modbusServer = new modbus.Server();
-const port = 502;
+//
+var config = require('./config');
+const port = config.port//502;
+//
 var tcpServer = net.createServer();
 tcpServer.listen(port,function(){
     console.log('TCP Socket bound to port '+port);
