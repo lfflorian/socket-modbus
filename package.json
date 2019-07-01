@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "ip": "^1.1.5",
+    "modbus-tcp": "^0.4.13",
     "socket.io": "^2.2.0"
   }
 }
