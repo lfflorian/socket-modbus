@@ -9,6 +9,7 @@ var tcpServer = net.createServer();
 tcpServer.listen(port,function(){
     console.log('TCP Socket bound to port '+port);
 });
+
 tcpServer.on('connection', function(socket){
     console.log('client has connected');
     modbusServer.pipe(socket);
@@ -16,6 +17,11 @@ tcpServer.on('connection', function(socket){
         console.log('Connection error: '+e);
         socket.destroy();
     });
+
+    socket.on('data', function(e) {
+        console.log('has recivido un mensaje: ' + e);
+    });
+
     socket.on('close', function(e){
         console.log('Client has closed connection.');
     });
