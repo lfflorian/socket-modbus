@@ -16,6 +16,8 @@ tcpServer.listen(port,function(){
 
 tcpServer.on('connection', function(socket){
     console.log('client has connected');
+    socket.write('123');
+    
     modbusServer.pipe(socket);
     modbusClient.pipe(socket);
 
