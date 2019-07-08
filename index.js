@@ -16,7 +16,7 @@ tcpServer.listen(port,function(){
 
 tcpServer.on('connection', function(socket){
     console.log('client has connected');
-    socket.write('123');
+    socket.write('123'); // con esto confirmamos la recepción
     
     modbusServer.pipe(socket);
     modbusClient.pipe(socket);
@@ -26,6 +26,7 @@ tcpServer.on('connection', function(socket){
     setInterval(ejecucion, 5000);
 
     function ejecucion() {
+        socket.write('01 02 00 00 00 08 79 CC')
         modbusClient.readCoils(0,0,8, function (err, coils) {
             if (err) console.log(err)
             console.log(coils)
