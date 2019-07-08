@@ -23,7 +23,7 @@ tcpServer.on('connection', function(socket){
 
     
 
-    setInterval(ejecucion, 5000);
+    setInterval(ejecucion, 9000);
 
     function ejecucion() {
         socket.write('01 02 00 00 00 08 79 CC')
