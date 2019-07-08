@@ -1,6 +1,8 @@
+
 var net = require('net');
 var modbus = require('modbus-tcp');
 var modbusServer = new modbus.Server();
+var modbusClient = new modbus.Client();
 //
 var config = require('./config');
 const port = config.port//502;
@@ -10,9 +12,33 @@ tcpServer.listen(port,function(){
     console.log('TCP Socket bound to port '+port);
 });
 
+
+
 tcpServer.on('connection', function(socket){
     console.log('client has connected');
     modbusServer.pipe(socket);
+    modbusClient.pipe(socket);
+
+    
+
+    setInterval(ejecucion, 5000);
+
+    function ejecucion() {
+        modbusClient.readCoils(0,0,8, function (err, coils) {
+            if (err) console.log(err)
+            console.log(coils)
+        })
+
+        modbusClient.readDiscreteInputs(0,0,8, function (err, coils) {
+            if (err) console.log(err)
+            console.log(coils)
+        })
+    }
+
+    modbusServer.reader((ss) => {
+        console.log(ss)
+    });
+
     socket.on('error', function(e){
         console.log('Connection error: '+e);
         socket.destroy();
@@ -24,6 +50,7 @@ tcpServer.on('connection', function(socket){
 
     socket.on('close', function(e){
         console.log('Client has closed connection.');
+        clearInterval(ejecucion)
     });
 });
 
@@ -32,7 +59,8 @@ modbusServer.on('read-coils',readCoils);
 modbusServer.on('read-discrete-inputs', readDiscreteInputs);
 modbusServer.on('read-holding-registers', readHoldingRegisters);
 modbusServer.on('read-input-registers', readInputRegisters);
-modbusServer.on('write-multiple-registers',writeRegisters);
+modbusServer.on('write-multiple-registers',writeRegisters); //
+modbusServer.on('write-single-coil',writeSingleCoil); 
 modbusServer.on('data', data);
 
 function readCoils(from,to,reply,q) {
@@ -40,7 +68,7 @@ function readCoils(from,to,reply,q) {
     console.log('val1: ')
     console.log(q)
     var values = [2,0,8]; // anything greater than zero is received as a 1
-    //return reply(null,values);
+    return reply(null,values);
 }
 
 function readDiscreteInputs(from,to,reply,q) {
@@ -69,6 +97,12 @@ function readInputRegisters(from,to,reply,q) {
 
 function writeRegisters(from,to,items,reply) {
     console.log('Write registers '+from+'-'+to);
+    console.log('  items:'+items);
+    reply();
+}
+
+function writeSingleCoil(from,to,items,reply) {
+    console.log('Write coils '+from+'-'+to);
     console.log('  items:'+items);
     reply();
 }
