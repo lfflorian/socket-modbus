@@ -27,15 +27,16 @@ tcpServer.on('connection', function(socket){
 
     function ejecucion() {
         socket.write('01 02 00 00 00 08 79 CC')
-        modbusClient.readCoils(0,0,8, function (err, coils) {
-            if (err) console.log(err)
-            console.log(coils)
-        })
 
-        modbusClient.readDiscreteInputs(0,0,8, function (err, coils) {
-            if (err) console.log(err)
-            console.log(coils)
-        })
+        // modbusClient.readCoils(0,0,8, function (err, coils) {
+        //     if (err) console.log(err)
+        //     console.log(coils)
+        // })
+
+        // modbusClient.readDiscreteInputs(0,0,8, function (err, coils) {
+        //     if (err) console.log(err)
+        //     console.log(coils)
+        // })
     }
 
     modbusServer.reader((ss) => {
