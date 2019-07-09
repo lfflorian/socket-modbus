@@ -36,15 +36,15 @@ tcpServer.on('connection', function(socket){
             console.log(data)
         })
 
-        // modbusClient.readCoils(0,0,8, function (err, coils) {
-        //     if (err) console.log(err)
-        //     console.log(coils)
-        // })
+        modbusClient.readCoils(0,0,8, function (err, coils) {
+            if (err) console.log(err)
+            console.log(coils)
+        })
 
-        // modbusClient.readDiscreteInputs(0,0,8, function (err, coils) {
-        //     if (err) console.log(err)
-        //     console.log(coils)
-        // })
+        modbusClient.readDiscreteInputs(0,0,8, function (err, coils) {
+            if (err) console.log(err)
+            console.log(coils)
+        })
     }
 
     modbusServer.reader((ss) => {
