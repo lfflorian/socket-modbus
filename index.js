@@ -12,7 +12,7 @@ tcpServer.listen(port,function(){
     console.log('TCP Socket bound to port '+port);
 });
 
-
+var bandera = true;
 
 tcpServer.on('connection', function(socket){
     console.log('client has connected');
@@ -21,12 +21,20 @@ tcpServer.on('connection', function(socket){
     modbusServer.pipe(socket);
     modbusClient.pipe(socket);
 
+    if (bandera = true)
+    {
+        setInterval(ejecucion, 9000);
+    } else
+    {
+        clearInterval(ejecucion)
+    }
     
-
-    setInterval(ejecucion, 9000);
-
     function ejecucion() {
-        socket.write('01 02 00 00 00 08 79 CC')
+        socket.write('01 02 00 00 00 08 79 CC', (data, err) => {
+            console.log('connecteison')
+            if (err) console.log(err)
+            console.log(data)
+        })
 
         // modbusClient.readCoils(0,0,8, function (err, coils) {
         //     if (err) console.log(err)
@@ -43,6 +51,10 @@ tcpServer.on('connection', function(socket){
         console.log(ss)
     });
 
+    socket.on('connect', function(e){
+        //console.log('Connection error: '+e);
+    });
+
     socket.on('error', function(e){
         console.log('Connection error: '+e);
         socket.destroy();
@@ -54,7 +66,7 @@ tcpServer.on('connection', function(socket){
 
     socket.on('close', function(e){
         console.log('Client has closed connection.');
-        clearInterval(ejecucion)
+        bandera = false;
     });
 });
 
