@@ -72,6 +72,8 @@ tcpServer.on('connection', function(socket){
     });
 
     socket.on('data', function(e) {
+        console.log(e)
+        console.log(typeof(e))
         console.log('has recivido un mensaje: ' + e);
     });
 
