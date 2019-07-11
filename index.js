@@ -1,4 +1,3 @@
-
 var net = require('net');
 var modbus = require('modbus-tcp');
 var modbusServer = new modbus.Server();
@@ -30,7 +29,17 @@ tcpServer.on('connection', function(socket){
     }
     
     function ejecucion() {
-        socket.write('00000001000000100000000000000000000000000111100111001100', 'binary', (data, err) => {
+        var buffer = Buffer.alloc(8);
+        buffer[0] = 1;
+        buffer[1] = 2;
+        buffer[2] = 0;
+        buffer[3] = 0;
+        buffer[4] = 0;
+        buffer[5] = 8;
+        buffer[6] = 121;
+        buffer[7] = 204;
+
+        socket.write(buffer, (data, err) => {
             console.log('connecteison')
             if (err) console.log(err)
             console.log(data)
