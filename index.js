@@ -30,7 +30,7 @@ tcpServer.on('connection', function(socket){
     }
     
     function ejecucion() {
-        socket.write('00000001000000100000000000000000000000000111100111001100', (data, err) => {
+        socket.write('00000001000000100000000000000000000000000111100111001100', 'binary', (data, err) => {
             console.log('connecteison')
             if (err) console.log(err)
             console.log(data)
