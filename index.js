@@ -30,32 +30,8 @@ tcpServer.on('connection', function(socket){
     }
     
     function ejecucion() {
-        socket.write('01 02 00 00 00 08 79 CC', 'ascii', (data, err) => {
+        socket.write('00000001000000100000000000000000000000000111100111001100', (data, err) => {
             console.log('connecteison')
-            if (err) console.log(err)
-            console.log(data)
-            console.log('data is: ' + data)
-            console.log(typeof(data))
-        })
-
-        socket.write('01 02 00 00 00 08 79 CC', (data, err) => {
-            console.log('connecteison 2')
-            if (err) console.log(err)
-            console.log(data)
-            console.log('data is: ' + data)
-            console.log(typeof(data))
-        })
-
-        socket.write('01020000000879CC', (data, err) => {
-            console.log('connecteison 3')
-            if (err) console.log(err)
-            console.log(data)
-            console.log('data is: ' + data)
-            console.log(typeof(data))
-        })
-
-        socket.write('01020000000879CC', 'ascii',(data, err) => {
-            console.log('connecteison 4')
             if (err) console.log(err)
             console.log(data)
             console.log('data is: ' + data)
