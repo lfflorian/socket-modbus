@@ -1,12 +1,8 @@
 var net = require('net');
-var modbus = require('modbus-tcp');
-var modbusServer = new modbus.Server();
-var modbusClient = new modbus.Client();
-//
 var config = require('./config');
 const port = config.port//502;
-//
 var tcpServer = net.createServer();
+
 tcpServer.listen(port,function(){
     console.log('TCP Socket bound to port '+port);
 });
@@ -17,9 +13,6 @@ tcpServer.on('connection', function(socket){
     console.log('client has connected');
     socket.write('123'); // con esto confirmamos la recepción
     
-    modbusServer.pipe(socket);
-    modbusClient.pipe(socket);
-
     if (bandera = true)
     {
         setInterval(ejecucion, 9000);
@@ -46,21 +39,7 @@ tcpServer.on('connection', function(socket){
             console.log('data is: ' + data)
             console.log(typeof(data))
         })
-
-        modbusClient.readCoils(0,0,8, function (err, coils) {
-            if (err) console.log(err)
-            console.log(coils)
-        })
-
-        modbusClient.readDiscreteInputs(0,0,8, function (err, coils) {
-            if (err) console.log(err)
-            console.log(coils)
-        })
     }
-
-    modbusServer.reader((ss) => {
-        console.log(ss)
-    });
 
     socket.on('connect', function(e){
         //console.log('Connection error: '+e);
@@ -82,65 +61,6 @@ tcpServer.on('connection', function(socket){
         bandera = false;
     });
 });
-
-
-modbusServer.on('read-coils',readCoils);
-modbusServer.on('read-discrete-inputs', readDiscreteInputs);
-modbusServer.on('read-holding-registers', readHoldingRegisters);
-modbusServer.on('read-input-registers', readInputRegisters);
-modbusServer.on('write-multiple-registers',writeRegisters); //
-modbusServer.on('write-single-coil',writeSingleCoil); 
-modbusServer.on('data', data);
-
-function readCoils(from,to,reply,q) {
-    console.log('Read coils '+from+'-'+to);
-    console.log('val1: ')
-    console.log(q)
-    var values = [2,0,8]; // anything greater than zero is received as a 1
-    return reply(null,values);
-}
-
-function readDiscreteInputs(from,to,reply,q) {
-    console.log('Read DISCRETED inputs '+from+'-'+to);
-    console.log('val2: ')
-    console.log(q)
-    var values = [2,0,8]; // anything greater than zero is received as a 1
-    return reply(null,values);
-}
-
-function readHoldingRegisters(from,to,reply,q) {
-    console.log('Read holding registers '+from+'-'+to);
-    console.log('val3: ')
-    console.log(q)
-    var values = [1,6,3,9]; // sample values just to see if it works.
-    return reply(null,bufferify(values));
-}
-
-function readInputRegisters(from,to,reply,q) {
-    console.log('read Input Registers '+from+'-'+to);
-    console.log('val4: ')
-    console.log(q)
-    var values = [1,6,3,9]; // sample values just to see if it works.
-    return reply(null,bufferify(values));
-}
-
-function writeRegisters(from,to,items,reply) {
-    console.log('Write registers '+from+'-'+to);
-    console.log('  items:'+items);
-    reply();
-}
-
-function writeSingleCoil(from,to,items,reply) {
-    console.log('Write coils '+from+'-'+to);
-    console.log('  items:'+items);
-    reply();
-}
-
-function data(from,to,reply,q) {
-    console.log('Read data '+from+'-'+to);
-    console.log('val5: ')
-    console.log(q)
-}
 
 function bufferify(itemsArray) {
     // When client reads values, have to supply an 
