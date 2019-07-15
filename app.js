@@ -44,19 +44,20 @@ app.get('/comando', function (req, res) {
 
 tcpServer.listen(port,function(){
     console.log('Servidor TCP funcionando en: '+port);
-    var buffer = Buffer.alloc(1);
+    var buffer = Buffer.alloc(8);
     buffer[0] = 4;
-    var daros = invertir(buffer[0].toString(2));
-    console.log(daros)
-    var datosEjemplo = daros.split('');
-    console.log('DIN0' + datosEjemplo[0])
-    console.log('DIN1' + datosEjemplo[1])
-    console.log('DIN2' + datosEjemplo[2])
-    console.log('DIN3' + datosEjemplo[3])
-    console.log('DIN4' + datosEjemplo[4])
-    console.log('DIN5' + datosEjemplo[5])
-    console.log('DIN6' + datosEjemplo[6])
-    console.log('DIN7' + datosEjemplo[7])
+    buffer[1] = 0;
+    buffer[2] = 10;
+    buffer[3] = 2;
+    buffer[4] = 2;
+    buffer[5] = 10;
+    buffer[6] = 0;
+    buffer[7] = 12;
+    console.log(buffer)
+    var dato = buffer.slice(buffer.length - 5,buffer.length - 2);
+    console.log(dato)
+    console.log(dato.readInt16LE())
+    console.log(dato.readInt16BE())
 });
 
 function invertir(cadena) {
