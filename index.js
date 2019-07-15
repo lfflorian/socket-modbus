@@ -67,6 +67,17 @@ tcpServer.on('connection', function(socket){
         socket.destroy();
     });
 
+    function invertir(cadena) {
+        var x = cadena.length;
+        var cadenaInvertida = "";
+
+        while (x >= 0) {
+            cadenaInvertida = cadenaInvertida + cadena.charAt(x);
+            x--;
+        }
+        return cadenaInvertida;
+    }
+
     socket.on('data', function(e) {
         // var objeto = new Object();
         // objeto.resultado = e.toString('hex');
@@ -79,7 +90,7 @@ tcpServer.on('connection', function(socket){
             switch (bufferRecepcion[1])
             {
                 case 2:
-                    DINs = bufferRecepcion[3].toString(2).split('')
+                    DINs = invertir(bufferRecepcion[3].toString(2)).split('')
                     console.log(DINs)
                     var DIN = new Object();
                     DIN.DIN0 = !! + DINs[0];

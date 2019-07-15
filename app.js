@@ -44,7 +44,31 @@ app.get('/comando', function (req, res) {
 
 tcpServer.listen(port,function(){
     console.log('Servidor TCP funcionando en: '+port);
+    var buffer = Buffer.alloc(1);
+    buffer[0] = 4;
+    var daros = invertir(buffer[0].toString(2));
+    console.log(daros)
+    var datosEjemplo = daros.split('');
+    console.log('DIN0' + datosEjemplo[0])
+    console.log('DIN1' + datosEjemplo[1])
+    console.log('DIN2' + datosEjemplo[2])
+    console.log('DIN3' + datosEjemplo[3])
+    console.log('DIN4' + datosEjemplo[4])
+    console.log('DIN5' + datosEjemplo[5])
+    console.log('DIN6' + datosEjemplo[6])
+    console.log('DIN7' + datosEjemplo[7])
 });
+
+function invertir(cadena) {
+    var x = cadena.length;
+    var cadenaInvertida = "";
+   
+    while (x>=0) {
+      cadenaInvertida = cadenaInvertida + cadena.charAt(x);
+      x--;
+    }
+    return cadenaInvertida;
+  }
 
 var bandera = true;
 tcpServer.on('connection', (socket) => {
