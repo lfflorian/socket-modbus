@@ -80,6 +80,7 @@ tcpServer.on('connection', function(socket){
             {
                 case 2:
                     DINs = bufferRecepcion[3].toString(2).split('')
+                    console.log(DINs)
                     var DIN = new Object();
                     DIN.DIN0 = !! + DINs[0];
                     DIN.DIN1 = !! + DINs[1];
@@ -118,7 +119,7 @@ tcpServer.on('connection', function(socket){
             Registro.CRCLow = bufferRecepcion[bufferRecepcion.length - 2];
             Registro.CRCHigh = bufferRecepcion[bufferRecepcion.length - 1];
 
-            console.log(Registro);
+            //console.log(Registro);
             firestore.collection('Registro_'+Registro.Funcion).add(Registro)
         }
         catch (error) {
