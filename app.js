@@ -47,17 +47,17 @@ tcpServer.listen(port,function(){
     var buffer = Buffer.alloc(8);
     buffer[0] = 4;
     buffer[1] = 0;
-    buffer[2] = 10;
-    buffer[3] = 2;
-    buffer[4] = 2;
-    buffer[5] = 10;
+    buffer[2] = 10; //
+    buffer[3] = 2; //
+    buffer[4] = 2; //
+    buffer[5] = 10; //
     buffer[6] = 0;
     buffer[7] = 12;
     console.log(buffer)
-    var dato = buffer.slice(buffer.length - 5,buffer.length - 2);
+    var dato = buffer.slice(buffer.length - 6,buffer.length - 2);
     console.log(dato)
-    console.log(dato.readInt16LE())
-    console.log(dato.readInt16BE())
+    //console.log(dato.readInt16LE(1))
+    console.log(dato.readInt32BE())
 });
 
 function invertir(cadena) {
