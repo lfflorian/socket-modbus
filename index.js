@@ -117,7 +117,7 @@ tcpServer.on('connection', function(socket){
                     Registro.Humedad = bufferRecepcion.readInt16BE(53, 55) / 100;
                     Registro.Contador = bufferRecepcion.readInt16BE(bufferRecepcion.length - 6, bufferRecepcion.length - 2);
                     console.log(bufferRecepcion.readInt16BE(bufferRecepcion.length - 6, bufferRecepcion.length - 2))
-                    console.log(bufferRecepcion.slice(bufferRecepcion.length - 6, bufferRecepcion.length - 2))
+                    console.log(bufferRecepcion.slice(bufferRecepcion.length - 6, bufferRecepcion.length - 2).toString())
                 break;
                 default:
                     return;
