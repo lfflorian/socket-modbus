@@ -69,19 +69,19 @@ tcpServer.on('connection', (socket) => {
         buffer[7] = 204;
         socket.write(buffer);
 
-        // setTimeout(function () {
-        //     //your code to be executed after 1 second
-        // }, 3000);
+        setTimeout(function () {
+            //your code to be executed after 1 second
+        }, 6000);
 
-        // buffer[0] = 1; // dispositivo
-        // buffer[1] = 4; // funcion
-        // buffer[2] = 0;
-        // buffer[3] = 0; // entrada
-        // buffer[4] = 0;
-        // buffer[5] = 28;
-        // buffer[6] = 241;
-        // buffer[7] = 195;
-        // socket.write(buffer);
+        buffer[0] = 1; // dispositivo
+        buffer[1] = 4; // funcion
+        buffer[2] = 0;
+        buffer[3] = 0; // entrada
+        buffer[4] = 0;
+        buffer[5] = 28;
+        buffer[6] = 241;
+        buffer[7] = 195;
+        socket.write(buffer);
     }
 
     socket.on('close', function(e){
@@ -89,7 +89,13 @@ tcpServer.on('connection', (socket) => {
         bandera = false;
     });
 
+    socket.on('error', function(e){
+        console.log('Connection error: '+e);
+        socket.destroy();
+    });
+
     socket.on('data', function(bufferRecepcion) {
+        console.log(bufferRecepcion)
         var Registro = new Object();
         switch (bufferRecepcion[1])
         {
