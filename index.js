@@ -3,6 +3,15 @@ var config = require('./config');
 const port = config.port//502;
 var tcpServer = net.createServer();
 
+var admin = require('firebase-admin');
+var serviceAccount = require('./aunth.json');
+/* Bases de datos */
+var firebase = admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://girhsa-95a6c.firebaseio.com"
+});
+var firestore = firebase.firestore();
+
 tcpServer.listen(port,function(){
     console.log('TCP Socket bound to port '+port);
 });
@@ -32,13 +41,21 @@ tcpServer.on('connection', function(socket){
         buffer[6] = 121;
         buffer[7] = 204;
 
-        socket.write(buffer, (data, err) => {
-            console.log('connecteison')
-            if (err) console.log(err)
-            console.log(data)
-            console.log('data is: ' + data)
-            console.log(typeof(data))
-        })
+        socket.write(buffer)
+
+        setTimeout(function () {
+            //your code to be executed after 1 second
+        }, 3000);
+
+        buffer[0] = 1; // dispositivo
+        buffer[1] = 4; // funcion
+        buffer[2] = 0;
+        buffer[3] = 0; // entrada
+        buffer[4] = 0;
+        buffer[5] = 28;
+        buffer[6] = 241;
+        buffer[7] = 195;
+        socket.write(buffer);
     }
 
     socket.on('connect', function(e){
@@ -51,9 +68,9 @@ tcpServer.on('connection', function(socket){
     });
 
     socket.on('data', function(e) {
-        console.log(e)
-        console.log(typeof(e))
-        console.log('has recivido un mensaje: ' + e);
+        var objeto = new Object();
+        objeto.resultado = e;
+        firestore.collection('Registro').add(objeto)
     });
 
     socket.on('close', function(e){
