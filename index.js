@@ -105,6 +105,9 @@ tcpServer.on('connection', function(socket){
                     Registro.Humedad = bufferRecepcion.readInt16BE(53, 55) / 100;
                     Registro.Contador = bufferRecepcion.readInt16BE(55, 59);
                 break;
+                default:
+                    return;
+                break;
             }
 
             Registro.Fecha = new Date();
@@ -116,7 +119,7 @@ tcpServer.on('connection', function(socket){
             Registro.CRCHigh = bufferRecepcion[bufferRecepcion.length - 1];
 
             console.log(Registro);
-            firestore.collection('Registro').add(Registro)
+            firestore.collection('Registro_'+Registro.Funcion).add(Registro)
         }
         catch (error) {
             console.log('Error ' + error)
