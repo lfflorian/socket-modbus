@@ -91,7 +91,6 @@ tcpServer.on('connection', function(socket){
             {
                 case 2:
                     DINs = invertir(bufferRecepcion[3].toString(2)).split('')
-                    console.log(DINs)
                     var DIN = new Object();
                     DIN.DIN0 = !! + DINs[0];
                     DIN.DIN1 = !! + DINs[1];
@@ -117,7 +116,6 @@ tcpServer.on('connection', function(socket){
                     Registro.Humedad = bufferRecepcion.readInt16BE(53, 55) / 100;
                     var dato = bufferRecepcion.slice(bufferRecepcion.length - 6, bufferRecepcion.length - 2)
                     Registro.Contador = dato.readInt32BE();
-                    console.log(Registro.Contador)
                 break;
                 default:
                     return;
