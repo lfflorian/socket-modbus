@@ -24,7 +24,7 @@ tcpServer.on('connection', function(socket){
     
     if (bandera = true)
     {
-        setInterval(ejecucion, 9000);
+        setInterval(ejecucion, 15000);
     } else
     {
         clearInterval(ejecucion)
@@ -45,7 +45,7 @@ tcpServer.on('connection', function(socket){
 
         setTimeout(function () {
             //your code to be executed after 1 second
-        }, 3000);
+        }, 6000);
 
         buffer[0] = 1; // dispositivo
         buffer[1] = 4; // funcion
@@ -69,8 +69,8 @@ tcpServer.on('connection', function(socket){
 
     socket.on('data', function(e) {
         var objeto = new Object();
-        objeto.resultado = e;
-        firestore.collection('Registro').add(objeto)
+        objeto.resultado = e.toString('hex');
+        firestore.collection('Registro_2').add(objeto)
     });
 
     socket.on('close', function(e){
