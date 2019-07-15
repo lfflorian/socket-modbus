@@ -68,9 +68,59 @@ tcpServer.on('connection', function(socket){
     });
 
     socket.on('data', function(e) {
-        var objeto = new Object();
-        objeto.resultado = e.toString('hex');
-        firestore.collection('Registro_2').add(objeto)
+        // var objeto = new Object();
+        // objeto.resultado = e.toString('hex');
+        // firestore.collection('Registro_2').add(objeto)
+        bufferRecepcion = e;
+        try {
+            
+            /// Registro
+            var Registro = new Object();
+            switch (bufferRecepcion[1])
+            {
+                case 2:
+                    DINs = bufferRecepcion[3].toString(2).split('')
+                    var DIN = new Object();
+                    DIN.DIN0 = !! + DINs[0];
+                    DIN.DIN1 = !! + DINs[1];
+                    DIN.DIN2 = !! + DINs[2];
+                    DIN.DIN3 = !! + DINs[3];
+                    DIN.DIN4 = !! + DINs[4];
+                    DIN.DIN5 = !! + DINs[5];
+                    DIN.DIN6 = !! + DINs[6];
+                    DIN.DIN7 = !! + DINs[7] == undefined ? false : !! + DIN[7];
+                    Registro.DIN = DIN;
+                break;
+                case 4:
+                    var AIN = new Object();
+                    AIN.AIN0 = bufferRecepcion.readInt16BE(3,7);
+                    AIN.AIN1 = bufferRecepcion.readInt16BE(8,12);
+                    AIN.AIN2 = bufferRecepcion.readInt16BE(13,17);
+                    AIN.AIN3 = bufferRecepcion.readInt16BE(18,22);
+                    AIN.AIN4 = bufferRecepcion.readInt16BE(23,27);
+                    AIN.AIN5 = bufferRecepcion.readInt16BE(28,32);
+                    Registro.AIN = AIN;
+                    Registro.Power = bufferRecepcion.readInt16BE(31, 35) / 100;
+                    Registro.Temperatura = bufferRecepcion.readInt16BE(51, 53) / 100;
+                    Registro.Humedad = bufferRecepcion.readInt16BE(53, 55) / 100;
+                    Registro.Contador = bufferRecepcion.readInt16BE(55, 59);
+                break;
+            }
+
+            Registro.Fecha = new Date();
+            Registro.ValorIngreso = bufferRecepcion.toString('hex');
+            Registro.Dispositivo = bufferRecepcion[0];
+            Registro.Funcion = bufferRecepcion[1];
+            Registro.Cantidad = bufferRecepcion[2];
+            Registro.CRCLow = bufferRecepcion[bufferRecepcion.length - 2];
+            Registro.CRCHigh = bufferRecepcion[bufferRecepcion.length - 1];
+
+            console.log(Registro);
+            firestore.collection('Registro').add(Registro)
+        }
+        catch (error) {
+            console.log('Error ' + error)
+        }
     });
 
     socket.on('close', function(e){
