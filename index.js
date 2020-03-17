@@ -19,6 +19,7 @@ tcpServer.listen(port,function(){
 var bandera = true;
 
 tcpServer.on('connection', function(socket){
+    socket.id = 93393;
     console.log('client has connected');
     socket.write('123'); // con esto confirmamos la recepción
     
