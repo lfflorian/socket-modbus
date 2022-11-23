@@ -18,7 +18,7 @@
     "modbus-serial": "^7.6.0",
     "modbus-tcp": "^0.4.13",
     "nodemon": "^1.19.1",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.5.0",
     "stream-master": "0.0.6"
   }
 }
